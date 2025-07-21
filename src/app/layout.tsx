@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Navbar from "./_components/Navbar";
-import Footer from "./_components/Footer";
+import "./globals.css";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -23,10 +22,8 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={`h-full bg-slate-100`}>
-      <Navbar />
-      <main className="pt-4 pb-20 bg-slate-100">{children}</main>
-      <Footer />
-    </div>
+    <html lang="en">
+      <body className={`h-full bg-slate-100`}>{children}</body>
+    </html>
   );
 }

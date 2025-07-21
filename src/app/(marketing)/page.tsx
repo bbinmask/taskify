@@ -17,7 +17,7 @@ export default function MarketingPage() {
   return (
     <div
       className={cn(
-        "flex items-center justify-center flex-col",
+        "flex items-center h-full mt-16 justify-center flex-col",
         calFont.className
       )}
     >

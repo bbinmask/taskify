@@ -4,10 +4,10 @@ export default function ClerkLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <ClerkProvider>
-      <div className="w-full h-screen flex items-center justify-center">
-        {children}
-      </div>
-    </ClerkProvider>
+    <div className="w-full h-full flex items-center justify-center">
+      {/* <ClerkProvider> */}
+      {children}
+      {/* </ClerkProvider> */}
+    </div>
   );
 }

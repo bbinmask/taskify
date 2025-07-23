@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion } from "@/components/ui/accordion";
+import NavItem from "./NavItem";
 
 const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
   const [expanded, setExpanded] = useLocalStorage<Record<string, any>>(
@@ -47,7 +48,15 @@ const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
   if (!isLoadedOrg || !isLoadedList || userMemberships.isLoading) {
     return (
       <>
-        <Skeleton />
+        <div className="flex items-center justify-between mb-2">
+          <Skeleton className="h-10 w-1/2" />
+          <Skeleton className="h-10 w-10" />
+        </div>
+        <div className="space-y-2">
+          <NavItem.Skeleton />
+          <NavItem.Skeleton />
+          <NavItem.Skeleton />
+        </div>
       </>
     );
   }
@@ -68,6 +77,21 @@ const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
           </Link>
         </Button>
       </div>
+      <Accordion
+        type="multiple"
+        defaultValue={defaultAccordianValue}
+        className="space-y-2"
+      >
+        {userMemberships.data.map(({ organization }) => (
+          <NavItem
+            key={organization.id}
+            isActive={activeOrganization?.id === organization.id}
+            isExpanded={expanded[organization.id]}
+            organization={organization}
+            onExpand={onExpand}
+          />
+        ))}
+      </Accordion>
     </>
   );
 };

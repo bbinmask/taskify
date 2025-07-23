@@ -13,6 +13,7 @@ const Navbar = () => {
           <Logo />
         </div>
         <Button
+          variant={"primary"}
           className="rounded-sm hidden md:block h-auto py-1.5 px-2"
           size={"sm"}
         >

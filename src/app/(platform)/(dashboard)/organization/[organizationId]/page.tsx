@@ -1,30 +1,21 @@
+import { createBoard } from "@/actions/create-board";
+import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 
-const OrganizationIdPage = ({ params }: { params: { id: string } }) => {
-  async function create(formData: FormData) {
-    "use server";
+import Form from "./Form";
+import Board from "./Board";
 
-    const title = formData.get("title") as string;
-
-    await db.board.create({
-      data: {
-        title,
-      },
-    });
-  }
+const OrganizationIdPage = async ({ params }: { params: { id: string } }) => {
+  const boards = await db.board.findMany();
 
   return (
-    <div>
-      <form action={create}>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          required
-          placeholder="Title"
-          className="border-black border p-1"
-        />
-      </form>
+    <div className="flex flex-col space-y-4">
+      <Form />
+      <div className="space-y-2">
+        {boards.map((board) => (
+          <Board title={board.title} id={board.id} key={board.id} />
+        ))}
+      </div>
     </div>
   );
 };

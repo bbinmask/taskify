@@ -1,20 +1,15 @@
-import { createBoard } from "@/actions/create-board";
-import { Button } from "@/components/ui/button";
-import { db } from "@/lib/db";
-
-import Form from "./Form";
-import Board from "./Board";
+import { Separator } from "@/components/ui/separator";
+import Info from "./_components/Info";
+import BoardList from "./_components/BoardList";
 
 const OrganizationIdPage = async ({ params }: { params: { id: string } }) => {
-  const boards = await db.board.findMany();
-
   return (
-    <div className="flex flex-col space-y-4">
-      <Form />
-      <div className="space-y-2">
-        {boards.map((board) => (
-          <Board title={board.title} id={board.id} key={board.id} />
-        ))}
+    <div className="w-full mb-20">
+      <Info />
+      <Separator />
+
+      <div className="px-2 md:px-4">
+        <BoardList />
       </div>
     </div>
   );

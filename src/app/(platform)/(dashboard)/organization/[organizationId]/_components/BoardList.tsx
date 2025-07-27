@@ -11,7 +11,7 @@ const BoardList = () => {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        <FormPopover side="right">
+        <FormPopover side="bottom">
           <div
             className="aspect-video relative w-full h-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center transition hover:opacity-75"
             role="button"

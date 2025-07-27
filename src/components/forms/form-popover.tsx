@@ -12,6 +12,8 @@ import FormSubmit from "./form-submit";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
+import { createBoard } from "@/actions/create-board";
+import { toast } from "sonner";
 
 interface FormPopoverProps {
   children: React.ReactNode;
@@ -26,6 +28,23 @@ const FormPopover = ({
   align,
   sideOffset,
 }: FormPopoverProps) => {
+  const { execute, fieldErrors } = useAction(createBoard, {
+    onSuccess: (data) => {
+      console.log({ data });
+      toast.success("Board created!");
+    },
+    onError: (err) => {
+      console.error({ err });
+      toast.error(err);
+    },
+  });
+
+  const onSubmit = (formData: FormData) => {
+    const title = formData.get("title") as string;
+
+    execute({ title });
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
@@ -47,8 +66,12 @@ const FormPopover = ({
           </Button>
         </PopoverClose>
 
-        <form action="">
-          <div className=""></div>
+        <form action={onSubmit} className="space-y-4">
+          <div className="space-y-4">
+            <FormInput id="title" label="Board title" errors={fieldErrors} />
+          </div>
+
+          <FormSubmit className="w-full">Create</FormSubmit>
         </form>
       </PopoverContent>
     </Popover>

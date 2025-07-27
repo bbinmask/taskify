@@ -2,18 +2,30 @@
 
 import { createBoard } from "@/actions/create-board";
 import { Button } from "@/components/ui/button";
-import Input from "./input";
+import FormInput from "./input";
 import { useFormState } from "react-dom";
 import FormButton from "../form-button";
+import { useAction } from "@/hooks/use-action";
 
 const Form = () => {
-  const initialState = { message: "", errors: {} as { title?: string[] } };
+  const { execute, fieldErrors } = useAction(createBoard, {
+    onSuccess: (data) => {
+      console.log(data, " Success");
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
 
-  const [state, dispatch] = useFormState(createBoard, initialState);
+  const onSubmit = (formData: FormData) => {
+    const title = formData.get("title") as string;
+
+    execute({ title });
+  };
 
   return (
-    <form action={dispatch}>
-      <Input errors={state.errors} />
+    <form action={onSubmit}>
+      <FormInput errors={fieldErrors} />
 
       <FormButton />
     </form>

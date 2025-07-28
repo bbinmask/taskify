@@ -4,6 +4,7 @@ import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import MobileSidebar from "./MobileSidebar";
+import FormPopover from "@/components/forms/form-popover";
 
 const Navbar = () => {
   return (
@@ -13,16 +14,25 @@ const Navbar = () => {
         <div className="hidden md:flex">
           <Logo />
         </div>
-        <Button
-          variant={"primary"}
-          className="rounded-sm hidden md:block h-auto py-1.5 px-2"
-          size={"sm"}
-        >
-          Create
-        </Button>
-        <Button className="rounded-sm block md:hidden" size={"sm"}>
-          <Plus />
-        </Button>
+        <FormPopover align="start" side="bottom" sideOffset={18}>
+          <Button
+            variant={"primary"}
+            className="rounded-sm hidden md:block h-auto py-1.5 px-2"
+            size={"sm"}
+          >
+            Create
+          </Button>
+        </FormPopover>
+
+        <FormPopover>
+          <Button
+            className="rounded-sm block md:hidden"
+            size={"sm"}
+            variant={"primary"}
+          >
+            <Plus />
+          </Button>
+        </FormPopover>
       </div>
       <div className="ml-auto flex items-center gap-x-2">
         <OrganizationSwitcher

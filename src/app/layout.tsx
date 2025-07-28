@@ -23,7 +23,7 @@ export default function MarketingLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`h-full bg-slate-100`}>{children}</body>
+      <body className={`h-screen bg-slate-100`}>{children}</body>
     </html>
   );
 }

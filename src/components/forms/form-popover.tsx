@@ -6,7 +6,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useAction } from "@/hooks/use-action";
-import { CreateBoard } from "@/actions/create-board/schema";
 import FormInput from "./form-input";
 import FormSubmit from "./form-submit";
 import { PopoverClose } from "@radix-ui/react-popover";
@@ -15,7 +14,8 @@ import { X } from "lucide-react";
 import { createBoard } from "@/actions/create-board";
 import { toast } from "sonner";
 import FormPicker from "./form-picker";
-import { ComponentRef, ElementRef, useRef } from "react";
+import { ComponentRef, useRef } from "react";
+import { redirect } from "next/navigation";
 
 interface FormPopoverProps {
   children: React.ReactNode;
@@ -36,6 +36,7 @@ const FormPopover = ({
     onSuccess: (data) => {
       toast.success(`${data.title} board is created`);
       closeRef.current?.click();
+      redirect(`/board/${data.id}`);
     },
     onError: (err) => {
       toast.error(err);

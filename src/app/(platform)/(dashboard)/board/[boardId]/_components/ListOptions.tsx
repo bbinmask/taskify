@@ -8,9 +8,14 @@ import {
   PopoverTrigger,
   PopoverClose,
 } from "@/components/ui/popover";
-
+import { Separator } from "@/components/ui/separator";
+import { useAction } from "@/hooks/use-action";
+import { deleteList } from "@/actions/delete-list";
 import { List } from "@/generated/prisma";
 import { MoreHorizontal, X } from "lucide-react";
+import { toast } from "sonner";
+import { ComponentRef, useRef } from "react";
+import { copyList } from "@/actions/copy-list";
 
 interface ListOptionsProps {
   data: List;
@@ -18,6 +23,49 @@ interface ListOptionsProps {
 }
 
 const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
+  const { execute: executeDelete } = useAction(deleteList, {
+    onSuccess: (data) => {
+      toast.success(`List "${data.title}" deleted!`);
+      closeRef.current?.click();
+    },
+
+    onError: (err) => {
+      toast.error(err);
+    },
+  });
+  const { execute: executeCopy } = useAction(copyList, {
+    onSuccess: (data) => {
+      toast.success(`List "${data.title}" copied!`);
+      closeRef.current?.click();
+    },
+
+    onError: (err) => {
+      toast.error(err);
+    },
+  });
+
+  const closeRef = useRef<ComponentRef<"button">>(null);
+
+  const onDelete = (formData: FormData) => {
+    const id = formData.get("id") as string;
+    const boardId = formData.get("boardId") as string;
+
+    executeDelete({
+      id,
+      boardId,
+    });
+  };
+
+  const onCopy = (formData: FormData) => {
+    const id = formData.get("id") as string;
+    const boardId = formData.get("boardId") as string;
+
+    executeCopy({
+      id,
+      boardId,
+    });
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -31,7 +79,7 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           List Actions
         </div>
 
-        <PopoverClose asChild>
+        <PopoverClose ref={closeRef} asChild>
           <Button
             className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600"
             variant={"ghost"}
@@ -48,7 +96,7 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           Add a card...
         </Button>
 
-        <form action="" className="">
+        <form action={onCopy} className="w-full">
           <input
             type="text"
             hidden
@@ -71,6 +119,34 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
             variant="ghost"
           >
             Copy list...
+          </FormSubmit>
+        </form>
+
+        <Separator />
+
+        <form action={onDelete} className="">
+          <input
+            type="text"
+            hidden
+            readOnly
+            value={data.id}
+            id="id"
+            name="id"
+          />
+          <input
+            type="text"
+            hidden
+            readOnly
+            value={data.boardId}
+            id="boardId"
+            name="boardId"
+          />
+
+          <FormSubmit
+            className="rounded-none w-full h-auto p-2 px-5 justify-start text-sm"
+            variant="ghost"
+          >
+            Delete this list...
           </FormSubmit>
         </form>
       </PopoverContent>

@@ -25,7 +25,12 @@ const FormSubmit = ({
   const { pending } = useFormStatus();
 
   return (
-    <Button type="submit" disabled={pending} variant={variant}>
+    <Button
+      type="submit"
+      className={className}
+      disabled={pending}
+      variant={variant}
+    >
       {children}
     </Button>
   );

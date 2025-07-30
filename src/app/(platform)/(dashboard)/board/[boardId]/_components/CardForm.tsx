@@ -15,6 +15,7 @@ import FormTextArea from "@/components/forms/form-textarea";
 import { Button } from "@/components/ui/button";
 import { useAction } from "@/hooks/use-action";
 import { useEventListener, useOnClickOutside } from "usehooks-ts";
+import { toast } from "sonner";
 interface CardFormProps {
   listId: string;
   enableEditing: () => void;
@@ -26,7 +27,15 @@ const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
     const formRef = useRef<ComponentRef<"form">>(null);
     const params = useParams();
 
-    const { execute, fieldErrors } = useAction(createCard, {});
+    const { execute, fieldErrors } = useAction(createCard, {
+      onSuccess: (data) => {
+        toast.success(`${data.title} card is created.`);
+        formRef.current?.reset();
+      },
+      onError: (err) => {
+        toast.error(err);
+      },
+    });
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -60,14 +69,26 @@ const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
 
     if (isEditing) {
       return (
-        <form action="" className="m-1 py-0.5 px-1 space-y-4">
+        <form
+          ref={formRef}
+          action={onSubmit}
+          className="m-1 py-0.5 px-1 space-y-4"
+        >
           <FormTextArea
             id="title"
-            onKeyDown={() => {}}
+            onKeyDown={onTextareaKeyDown}
+            errors={fieldErrors}
             ref={ref}
             placeholder="Enter a title for this card"
           />
           <input type="text" readOnly hidden name="listId" value={listId} />
+          <input
+            type="text"
+            readOnly
+            hidden
+            name="boardId"
+            value={params.boardId}
+          />
 
           <div className="flex items-center gap-x-1">
             <FormSubmit>Add card</FormSubmit>

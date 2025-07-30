@@ -19,7 +19,7 @@ import { copyList } from "@/actions/copy-list";
 
 interface ListOptionsProps {
   data: List;
-  onAddCard: () => void;
+  onAddCard: (val: boolean) => void;
 }
 
 const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
@@ -89,7 +89,7 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
         </PopoverClose>
 
         <Button
-          onClick={onAddCard}
+          onClick={() => onAddCard(true)}
           className="rounded-none w-full h-auto p-2 px-5 justify-start text-sm"
           variant="ghost"
         >

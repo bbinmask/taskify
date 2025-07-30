@@ -1,8 +1,14 @@
 import { z } from "zod";
 
-export const CreateList = z.object({
-  title: z.string().min(3, {
-    message: "Title is too short",
-  }),
+export const UpdateListOrder = z.object({
   boardId: z.string(),
+  items: z.array(
+    z.object({
+      id: z.string(),
+      title: z.string(),
+      order: z.number(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+    })
+  ),
 });

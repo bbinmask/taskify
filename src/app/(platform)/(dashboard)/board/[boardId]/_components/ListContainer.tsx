@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { debounce, cloneDeep } from "lodash";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { ListWithCards } from "@/types/type";
 import ListForm from "./ListForm";
 import ListItem from "./ListItem";
+import { useAction } from "@/hooks/use-action";
+import { updateListOrder } from "@/actions/update-list-order";
+import { toast } from "sonner";
 
 interface ListContainerProps {
   data: ListWithCards[];
@@ -21,6 +25,15 @@ export function reorder<T>(list: T[], start: number, end: number) {
 }
 
 const ListContainer = ({ data, boardId }: ListContainerProps) => {
+  const { execute: executeUpdateList } = useAction(updateListOrder, {
+    onSuccess: () => {
+      toast.success("List reordered");
+    },
+    onError: (err) => {
+      toast.error(err);
+    },
+  });
+
   const [orderedData, setOrderedData] = useState(data);
 
   useEffect(() => {
@@ -48,14 +61,14 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
       );
 
       setOrderedData(items);
+
+      executeUpdateList({ items, boardId });
     }
 
     // Checking if the card is moving
 
     if (type === "card") {
-      const newOrderedData: typeof orderedData = JSON.parse(
-        JSON.stringify(orderedData)
-      );
+      const newOrderedData: typeof orderedData = cloneDeep(orderedData);
 
       const sourceList = newOrderedData.find(
         (list) => list.id === source.droppableId

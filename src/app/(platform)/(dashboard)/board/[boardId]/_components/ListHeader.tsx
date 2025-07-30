@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import ListOptions from "./ListOptions";
 interface ListHeaderProps {
   data: List;
-  onAddCard: (val: boolean) => void;
+  onAddCard: () => void;
 }
 
 const ListHeader = ({ data, onAddCard }: ListHeaderProps) => {

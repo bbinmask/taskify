@@ -1,8 +1,10 @@
 "use client";
 
+import { createCard } from "@/actions/create-card";
 import FormSubmit from "@/components/forms/form-submit";
 import FormTextArea from "@/components/forms/form-textarea";
 import { Button } from "@/components/ui/button";
+import { useAction } from "@/hooks/use-action";
 import { Plus, X } from "lucide-react";
 import { forwardRef } from "react";
 
@@ -14,6 +16,8 @@ interface CardFormProps {
 }
 const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
   ({ listId, enableEditing, disableEditing, isEditing }, ref) => {
+    const {} = useAction(createCard, {});
+
     if (isEditing) {
       return (
         <form action="" className="m-1 py-0.5 px-1 space-y-4">

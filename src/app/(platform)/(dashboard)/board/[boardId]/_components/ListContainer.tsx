@@ -9,6 +9,7 @@ import ListItem from "./ListItem";
 import { useAction } from "@/hooks/use-action";
 import { updateListOrder } from "@/actions/update-list-order";
 import { toast } from "sonner";
+import { updateCardOrder } from "@/actions/update-card-order";
 
 interface ListContainerProps {
   data: ListWithCards[];
@@ -25,9 +26,18 @@ export function reorder<T>(list: T[], start: number, end: number) {
 }
 
 const ListContainer = ({ data, boardId }: ListContainerProps) => {
-  const { execute: executeUpdateList } = useAction(updateListOrder, {
+  const { execute: executeUpdateOrder } = useAction(updateListOrder, {
     onSuccess: () => {
       toast.success("List reordered");
+    },
+    onError: (err) => {
+      toast.error(err);
+    },
+  });
+
+  const { execute: executeCardOrder } = useAction(updateCardOrder, {
+    onSuccess: () => {
+      toast.success("Card reordered");
     },
     onError: (err) => {
       toast.error(err);
@@ -62,7 +72,7 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
 
       setOrderedData(items);
 
-      executeUpdateList({ items, boardId });
+      executeUpdateOrder({ items, boardId });
     }
 
     // Checking if the card is moving
@@ -105,6 +115,8 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
         });
         sourceList.cards = reordered;
         setOrderedData(newOrderedData);
+
+        executeCardOrder({ boardId, items: reordered });
       }
 
       // Checking if the card is moving to the different list
@@ -126,6 +138,7 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
         });
 
         setOrderedData(newOrderedData);
+        executeCardOrder({ boardId, items: destList.cards });
       }
     }
   };

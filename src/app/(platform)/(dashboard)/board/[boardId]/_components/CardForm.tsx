@@ -2,7 +2,13 @@
 
 import { useParams } from "next/navigation";
 import { Plus, X } from "lucide-react";
-import { forwardRef, useRef, ComponentRef, KeyboardEvent } from "react";
+import {
+  forwardRef,
+  useRef,
+  ComponentRef,
+  KeyboardEvent,
+  KeyboardEventHandler,
+} from "react";
 import { createCard } from "@/actions/create-card";
 import FormSubmit from "@/components/forms/form-submit";
 import FormTextArea from "@/components/forms/form-textarea";
@@ -28,8 +34,29 @@ const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
       }
     };
 
-    useEventListener("keydown");
+    useEventListener("keydown", onKeyDown as any);
     useOnClickOutside(formRef as any, () => disableEditing());
+
+    const onTextareaKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (
+      e
+    ) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        formRef.current?.requestSubmit();
+      }
+    };
+
+    const onSubmit = (formData: FormData) => {
+      const title = formData.get("title") as string;
+      const listId = formData.get("listId") as string;
+      const boardId = formData.get("boardId") as string;
+
+      execute({
+        title,
+        listId,
+        boardId,
+      });
+    };
 
     if (isEditing) {
       return (

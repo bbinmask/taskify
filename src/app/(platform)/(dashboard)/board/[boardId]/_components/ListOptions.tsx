@@ -96,7 +96,7 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           Add a card...
         </Button>
 
-        <form action={onCopy} className="w-full">
+        <form action={onCopy} className="">
           <input
             type="text"
             hidden

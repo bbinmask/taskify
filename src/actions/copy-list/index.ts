@@ -76,7 +76,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       },
     });
   } catch (error: any) {
-    console.error(error.message);
     return {
       error: "Failed to copy list.",
     };

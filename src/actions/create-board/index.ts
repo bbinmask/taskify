@@ -9,6 +9,7 @@ import { CreateBoard } from "./schema";
 import { redirect } from "next/navigation";
 import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@/generated/prisma";
+import { hasAvailableCount, incrementAvailableCount } from "@/lib/org-limit";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = await auth();
@@ -18,6 +19,15 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   const { title, image } = data;
+
+  const canCreate = await hasAvailableCount();
+
+  if (!canCreate) {
+    return {
+      error:
+        "You have reached your limit of free boards. Please upgrade to create more.",
+    };
+  }
 
   const [imageId, imageThumbUrl, imageFullUrl, imageLinkHTML, imagUsername] =
     image.split("|");
@@ -47,6 +57,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         imagUsername,
       },
     });
+
+    await incrementAvailableCount();
 
     await createAuditLog({
       entityId: board.id,

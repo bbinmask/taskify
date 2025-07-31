@@ -10,12 +10,28 @@ import { useEventListener, useOnClickOutside } from "usehooks-ts";
 import FormTextArea from "@/components/forms/form-textarea";
 import FormSubmit from "@/components/forms/form-submit";
 import { Button } from "@/components/ui/button";
+import { useAction } from "@/hooks/use-action";
+import { updateCard } from "@/actions/update-card";
+import { toast } from "sonner";
 
 interface DescriptionProps {
   data: CardWithList;
 }
 
 const Description = ({ data }: DescriptionProps) => {
+  const { execute, fieldErrors } = useAction(updateCard, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["card", data.id],
+      });
+      toast.success(`Card ${data.title} updated`);
+      disableEditing();
+    },
+    onError: (err) => {
+      toast.error(err);
+    },
+  });
+
   const queryClient = useQueryClient();
 
   const params = useParams();
@@ -45,6 +61,17 @@ const Description = ({ data }: DescriptionProps) => {
   const onSubmit = (formData: FormData) => {
     const description = formData.get("description") as string;
     const boardId = params.boardId as string;
+
+    if (description === data.description) {
+      disableEditing();
+      return;
+    }
+    execute({
+      title: data.title,
+      description,
+      boardId,
+      id: data.id,
+    });
   };
 
   useEventListener("keydown", onKeyDown);
@@ -59,11 +86,15 @@ const Description = ({ data }: DescriptionProps) => {
 
       <div className="w-full">
         {isEditing ? (
-          <form className="space-y-2" ref={formRef}>
+          <form className="space-y-2" action={onSubmit} ref={formRef}>
             <FormTextArea
+              errors={fieldErrors}
               id="description"
               className="w-full mt-2"
-              placeholder="Add a more detailed description"
+              placeholder={
+                data.description || "Add a more detailed description"
+              }
+              ref={textareaRef}
               defaultValue={data.description || undefined}
             />
 

@@ -8,7 +8,7 @@ interface ActivityItemsProps {
   data: AuditLog;
 }
 
-const ActivityItems = ({ data }: ActivityItemsProps) => {
+const ActivityItem = ({ data }: ActivityItemsProps) => {
   return (
     <li className="flex items-center gap-x-2">
       <Avatar className="h-8 w-8">
@@ -32,4 +32,4 @@ const ActivityItems = ({ data }: ActivityItemsProps) => {
   );
 };
 
-export default ActivityItems;
+export default ActivityItem;

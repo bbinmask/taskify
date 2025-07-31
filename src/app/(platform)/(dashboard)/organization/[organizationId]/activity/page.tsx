@@ -1,5 +1,18 @@
+import { Separator } from "@/components/ui/separator";
+import Info from "../_components/Info";
+import ActivityList from "./_components/ActivityList";
+import { Suspense } from "react";
+
 const ActivityPage = () => {
-  return <div>ActivityPage</div>;
+  return (
+    <div className="w-full">
+      <Info />
+      <Separator />
+      <Suspense fallback={<ActivityList.Skeleton />}>
+        <ActivityList />
+      </Suspense>
+    </div>
+  );
 };
 
 export default ActivityPage;

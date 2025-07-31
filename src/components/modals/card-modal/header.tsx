@@ -16,6 +16,19 @@ interface HeaderProps {
 }
 
 const Header = ({ data }: HeaderProps) => {
+  const { execute } = useAction(updateCard, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["card", data.id],
+      });
+      toast.success(`Renamed to ${data.title}`);
+      setTitle(data.title);
+    },
+    onError: (err) => {
+      toast.error(err);
+    },
+  });
+
   const queryClient = useQueryClient();
   const params = useParams();
   const inputRef = useRef<ComponentRef<"input">>(null);
@@ -26,11 +39,22 @@ const Header = ({ data }: HeaderProps) => {
     inputRef.current?.form?.requestSubmit();
   };
 
+  const onSubmit = (formData: FormData) => {
+    const newTitle = formData.get("title") as string;
+    const boardId = params.boardId as string;
+
+    if (newTitle === title) return;
+    execute({
+      title: newTitle,
+      boardId,
+      id: data.id,
+    });
+  };
   return (
     <div className="flex items-start gap-x-3 mb-6 w-full">
       <Layout className="h-5 w-5 text-neutral-700" />
       <div className="w-full">
-        <form action={""} className="">
+        <form action={onSubmit} className="">
           <FormInput
             ref={inputRef}
             onBlur={onBlur}

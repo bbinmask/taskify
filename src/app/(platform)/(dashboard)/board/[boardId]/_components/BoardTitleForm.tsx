@@ -7,6 +7,7 @@ import FormInput from "@/components/forms/form-input";
 import { updateBoard } from "@/actions/update-board";
 import { useAction } from "@/hooks/use-action";
 import { toast } from "sonner";
+import { useOnClickOutside } from "usehooks-ts";
 
 interface BoardTitleFormProps {
   data: Board;
@@ -53,6 +54,8 @@ const BoardTitleForm = ({ data }: BoardTitleFormProps) => {
   const onBlur = () => {
     formRef.current?.requestSubmit();
   };
+
+  useOnClickOutside(formRef as any, disableEditing);
 
   if (isEditing) {
     return (

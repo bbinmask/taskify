@@ -16,22 +16,24 @@ interface ActionsProps {
 }
 
 const Actions = ({ data }: ActionsProps) => {
-  const { execute: executeDeleteCard, isLoading: isLoadingCopy } = useAction(
+  const { execute: executeDeleteCard, isLoading: isLoadingDelete } = useAction(
     deleteCard,
     {
       onSuccess: () => {
         toast.success(`Card ${data.title} deleted`);
+        cardModal.onClose();
       },
       onError: (err) => {
         toast.error(err);
       },
     }
   );
-  const { execute: executeCopyCard, isLoading: isLoadingDelete } = useAction(
+  const { execute: executeCopyCard, isLoading: isLoadingCopy } = useAction(
     copyCard,
     {
       onSuccess: () => {
         toast.success(`Card ${data.title} copied`);
+        cardModal.onClose();
       },
       onError: (err) => {
         toast.error(err);
@@ -44,7 +46,9 @@ const Actions = ({ data }: ActionsProps) => {
   const params = useParams();
 
   const onCopy = () => {
-    const boardId = params.boardIs as string;
+    const boardId = params.boardId as string;
+
+    console.log(boardId, data.id);
 
     executeCopyCard({
       boardId,
@@ -53,7 +57,7 @@ const Actions = ({ data }: ActionsProps) => {
   };
 
   const onDelete = () => {
-    const boardId = params.boardIs as string;
+    const boardId = params.boardId as string;
 
     executeDeleteCard({
       boardId,

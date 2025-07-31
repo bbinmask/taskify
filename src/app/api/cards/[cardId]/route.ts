@@ -8,6 +8,9 @@ export async function GET(
 ) {
   try {
     const { userId, orgId } = await auth();
+    const { cardId } = params;
+
+    if (!cardId) return new NextResponse("Unauthorized", { status: 401 });
 
     if (!userId || !orgId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -15,7 +18,7 @@ export async function GET(
 
     const card = await db.card.findUnique({
       where: {
-        id: params.cardId,
+        id: cardId,
         list: { board: { orgId } },
       },
 

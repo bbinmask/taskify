@@ -6,6 +6,7 @@ import { fetcher } from "@/lib/fetcher";
 import { CardWithList } from "@/types/type";
 import { useQuery } from "@tanstack/react-query";
 import Header from "./header";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 const CardModal = () => {
   const { id, isOpen, onClose } = useCardModal();
@@ -18,7 +19,8 @@ const CardModal = () => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
-        <Header data={cardData}></Header>
+        <DialogTitle />
+        {!cardData ? <Header.Skeleton /> : <Header data={cardData}></Header>}
       </DialogContent>
     </Dialog>
   );

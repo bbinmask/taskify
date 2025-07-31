@@ -25,6 +25,10 @@ export async function GET(
       },
       take: 3,
     });
+
+    if (!auditLogs) return new NextResponse("No logs found", { status: 404 });
+
+    return NextResponse.json(auditLogs);
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }

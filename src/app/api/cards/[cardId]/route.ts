@@ -8,9 +8,9 @@ export async function GET(
 ) {
   try {
     const { userId, orgId } = await auth();
-    const { cardId } = params;
+    const { cardId } = await params;
 
-    if (!cardId) return new NextResponse("Unauthorized", { status: 401 });
+    // if (!cardId) return new NextResponse("Unauthorized", { status: 401 });
 
     if (!userId || !orgId) {
       return new NextResponse("Unauthorized", { status: 401 });

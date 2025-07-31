@@ -10,6 +10,7 @@ import { UpdateCard } from "./schema";
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = await auth();
 
+  console.log(userId, orgId);
   if (!userId || !orgId) {
     return {
       error: "Unauthorized",
@@ -20,7 +21,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   let card;
 
-  console.log(card);
   try {
     card = await db.card.update({
       where: {
@@ -39,7 +39,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  revalidatePath(`/board/${id}`);
+  revalidatePath(`/board/${boardId}`);
   return { data: card };
 };
 

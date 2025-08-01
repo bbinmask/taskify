@@ -23,9 +23,9 @@ export async function POST(req: Request) {
   const session = event.data.object as Stripe.Checkout.Session;
 
   if (event.type === "checkout.session.completed") {
-    const subscription = await stripe.subscriptions.retrieve(
+    const subscription = (await stripe.subscriptions.retrieve(
       session.subscription as string
-    );
+    )) as Stripe.Response<Stripe.Subscription | any>;
 
     if (!session?.metadata?.orgId) {
       return new NextResponse("Org ID is required", { status: 400 });
@@ -38,16 +38,16 @@ export async function POST(req: Request) {
         stripeCustomerId: subscription.customer as string,
         stripePriceId: subscription.items.data[0].price.id,
         stripeCurrentPeriodEnd: new Date(
-          (subscription.ended_at as number) * 1000
+          subscription.current_period_end * 1000
         ),
       },
     });
   }
 
   if (event.type === "invoice.payment_succeeded") {
-    const subscription = await stripe.subscriptions.retrieve(
+    const subscription = (await stripe.subscriptions.retrieve(
       session.subscription as string
-    );
+    )) as Stripe.Response<Stripe.Subscription | any>;
 
     await db.orgSubscription.update({
       where: {
@@ -61,4 +61,6 @@ export async function POST(req: Request) {
       },
     });
   }
+
+  return new NextResponse(null, { status: 200 });
 }

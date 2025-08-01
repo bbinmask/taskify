@@ -4,11 +4,6 @@ import { Medal } from "lucide-react";
 import { Cal_Sans, Poppins } from "next/font/google";
 import Link from "next/link";
 
-const calFont = Cal_Sans({
-  subsets: ["latin"],
-  weight: "400",
-});
-
 const textFont = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -17,8 +12,7 @@ export default function MarketingPage() {
   return (
     <div
       className={cn(
-        "flex items-center h-full mt-16 justify-center flex-col",
-        calFont.className
+        "flex items-center h-full mt-16 justify-center flex-col font-[cal sans]"
       )}
     >
       <div className="flex items-center justify-center flex-col">

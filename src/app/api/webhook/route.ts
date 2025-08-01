@@ -8,6 +8,8 @@ export async function POST(req: Request) {
   const body = await req.text();
   const signature = (await headers()).get("Stripe-Signature") as string;
 
+  console.log("Signature:  ", signature, " & Body: ", body);
+
   let event: Stripe.Event;
 
   try {
@@ -63,4 +65,8 @@ export async function POST(req: Request) {
   }
 
   return new NextResponse(null, { status: 200 });
+}
+
+export async function GET(req: Request) {
+  return NextResponse.json({ message: "Got it" });
 }

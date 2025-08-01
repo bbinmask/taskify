@@ -48,8 +48,6 @@ const Actions = ({ data }: ActionsProps) => {
   const onCopy = () => {
     const boardId = params.boardId as string;
 
-    console.log(boardId, data.id);
-
     executeCopyCard({
       boardId,
       id: data.id,

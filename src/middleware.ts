@@ -1,11 +1,6 @@
-import { RedirectToSignIn } from "@clerk/nextjs";
-import {
-  clerkMiddleware,
-  createRouteMatcher,
-  auth as clerkAuth,
-} from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)"]);
+const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)", "/api/webhook"]);
 
 export default clerkMiddleware(async (auth, req) => {
   const { pathname } = req.nextUrl;

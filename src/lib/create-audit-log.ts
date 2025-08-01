@@ -33,6 +33,6 @@ export const createAuditLog = async (props: Props) => {
       },
     });
   } catch (error: any) {
-    console.log("AUDIT LOG ERROR: ", error?.message);
+    console.error("AUDIT LOG ERROR: ", error?.message);
   }
 };

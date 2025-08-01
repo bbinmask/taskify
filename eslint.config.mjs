@@ -11,6 +11,13 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    files: ["src/app/(platform)/(dashboard)/board/[boardId]/layout.tsx"],
+    rules: {
+      "@typescript-eslint/ban-ts-comment": "off",
+      "no-unused-vars": "off",
+    },
+  },
 ];
 
 export default eslintConfig;

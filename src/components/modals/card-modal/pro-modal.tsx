@@ -1,12 +1,28 @@
 "use client";
 
+import { stripeRedirect } from "@/actions/stripe-redirect";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useAction } from "@/hooks/use-action";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import Image from "next/image";
+import { toast } from "sonner";
 
 const ProModal = () => {
+  const { execute, isLoading } = useAction(stripeRedirect, {
+    onSuccess: (url) => {
+      window.location.href = url;
+    },
+    onError: (err) => {
+      toast.error(err);
+    },
+  });
+
+  const onClick = () => {
+    execute({});
+  };
+
   const { isOpen, onClose } = useProModal();
 
   return (
@@ -33,7 +49,12 @@ const ProModal = () => {
               <li className="">And more!</li>
             </ul>
           </div>
-          <Button className="w-full" variant={"primary"}>
+          <Button
+            disabled={isLoading}
+            onClick={onClick}
+            className="w-full"
+            variant={"primary"}
+          >
             Upgrade
           </Button>
         </div>

@@ -30,7 +30,7 @@ export async function generateMetadata({
   return { title: board?.title || "Board" };
 }
 
-const BoardIdLayout = async ({ children, params }: BoardIdLayoutProps) => {
+const BoardIdLayout = async ({ children, params }: any) => {
   const { orgId } = await auth();
   const { boardId } = await params;
 

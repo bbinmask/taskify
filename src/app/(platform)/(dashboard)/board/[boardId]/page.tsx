@@ -5,7 +5,7 @@ import ListContainer from "./_components/ListContainer";
 
 interface BoardIdPageProps {
   params: {
-    boardId: string;
+    boardId: any;
   };
 }
 

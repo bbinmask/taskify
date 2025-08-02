@@ -4,11 +4,11 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: any } //{ cardId: string } |
+  { params }: { params: { cardId: string } }
 ) {
   try {
     const { userId, orgId } = await auth();
-    const { cardId } = await params;
+    const { cardId } = params;
 
     if (!cardId) return new NextResponse("Unauthorized", { status: 401 });
 

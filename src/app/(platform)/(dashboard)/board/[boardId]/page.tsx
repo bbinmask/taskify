@@ -4,12 +4,12 @@ import { redirect } from "next/navigation";
 import ListContainer from "./_components/ListContainer";
 
 interface BoardIdPageProps {
-  params: any;
+  params: { boardId: string };
 }
 
 const BoardIdPage = async ({ params }: BoardIdPageProps) => {
   const { orgId } = await auth();
-  const { boardId } = await params;
+  const { boardId } = params;
   if (!orgId) {
     redirect("/select-org");
   }

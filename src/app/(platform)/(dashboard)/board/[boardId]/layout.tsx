@@ -6,12 +6,16 @@ import BoardNavbar from "./_components/BoardNavbar";
 
 interface BoardIdLayoutProps {
   children: ReactNode;
-  params: any;
+  params: { boardId: string };
 }
 
-export async function generateMetadata({ params }: { params: any }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { boardId: string };
+}) {
   const { orgId } = await auth();
-  const { boardId } = await params;
+  const { boardId } = params;
   if (!orgId) return { title: "Board" };
 
   const board = await db.board.findUnique({
@@ -26,7 +30,7 @@ export async function generateMetadata({ params }: { params: any }) {
 
 const BoardIdLayout = async ({ children, params }: BoardIdLayoutProps) => {
   const { orgId } = await auth();
-  const { boardId } = await params;
+  const { boardId } = params;
 
   if (!orgId) return redirect("/select-org");
 

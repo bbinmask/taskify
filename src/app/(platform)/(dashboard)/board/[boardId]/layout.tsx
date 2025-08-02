@@ -6,14 +6,10 @@ import BoardNavbar from "./_components/BoardNavbar";
 
 interface BoardIdLayoutProps {
   children: ReactNode;
-  params: { boardId: string };
+  params: any;
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { boardId: string };
-}) {
+export async function generateMetadata({ params }: { params: any }) {
   const { orgId } = await auth();
   const { boardId } = params;
   if (!orgId) return { title: "Board" };

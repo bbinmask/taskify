@@ -14,7 +14,7 @@ interface BoardIdLayoutProps {
 export async function generateMetadata({
   params,
 }: {
-  params: { boardId: string };
+  params: { boardId: any };
 }) {
   const { orgId } = await auth();
   const { boardId } = await params;
@@ -30,7 +30,7 @@ export async function generateMetadata({
   return { title: board?.title || "Board" };
 }
 
-const BoardIdLayout = async ({ children, params }: any) => {
+const BoardIdLayout = async ({ children, params }: BoardIdLayoutProps) => {
   const { orgId } = await auth();
   const { boardId } = await params;
 

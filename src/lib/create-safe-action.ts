@@ -1,4 +1,4 @@
-import { z, type Schema } from "zod";
+import { type Schema } from "zod";
 
 export type FieldErrors<T> = {
   [K in keyof T]?: string[];

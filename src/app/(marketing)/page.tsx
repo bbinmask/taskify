@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Medal } from "lucide-react";
-import { Cal_Sans, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import Link from "next/link";
 
 const textFont = Poppins({

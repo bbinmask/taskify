@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { debounce, cloneDeep } from "lodash";
+import { cloneDeep } from "lodash";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { ListWithCards } from "@/types/type";
 import ListForm from "./ListForm";

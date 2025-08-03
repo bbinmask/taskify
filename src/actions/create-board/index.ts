@@ -6,7 +6,6 @@ import { InputType, ReturnType } from "./types";
 import { auth } from "@clerk/nextjs/server";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { CreateBoard } from "./schema";
-import { redirect } from "next/navigation";
 import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@/generated/prisma";
 import { hasAvailableCount, incrementAvailableCount } from "@/lib/org-limit";

@@ -50,7 +50,7 @@ const BoardList = async () => {
             <p className="relative font-semibold text-white">{board.title}</p>
           </Link>
         ))}
-        <FormPopover side="bottom">
+        <FormPopover side="right">
           <div
             className="aspect-video relative w-full h-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center transition hover:opacity-75"
             role="button"
